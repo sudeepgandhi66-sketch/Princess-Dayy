@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Princess Day — Pastel Castle Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky-top: #fce7f3;
+      --sky-mid: #f3e8ff;
+      --sky-bot: #e0f2fe;
+      --rose-deep: #be185d;
+      --rose-soft: #f472b6;
+      --lavender-deep: #6b21a8;
+      --gold-accent: #d97706;
+      --gold-light: #fef3c7;
+      --parchment: rgba(255, 250, 253, 0.88);
+      --text-main: #4a1d48;
+      --text-muted: #7e3f7b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
+      background: linear-gradient(160deg, var(--sky-top) 0%, var(--sky-mid) 52%, var(--sky-bot) 100%);
+      overflow: hidden;
+      position: relative;
+      user-select: none;
+    }
+
+    /* Ambient Floating Clouds & Castle Backdrop */
+    .castle-backdrop {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .sun-glow {
+      position: absolute;
+      top: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(254,243,199,0.5) 45%, transparent 72%);
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+      50% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+    }
+
+    .castle-svg {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(980px, 145vw);
+      height: auto;
+      opacity: 0.78;
+      filter: drop-shadow(0 12px 30px rgba(190, 24, 93, 0.14));
+    }
+
+    #petalsCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top Bar Controls */
+    .top-bar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(244, 114, 182, 0.45);
+      color: var(--rose-deep);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(190, 24, 93, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .pill-btn:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Main Stage */
+    .stage {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* Cover Screen (Wax Seal Proclamation) */
+    .proclamation-card {
+      background: var(--parchment);
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 24px 60px rgba(131, 24, 67, 0.16), inset 0 0 0 6px rgba(251, 207, 232, 0.45);
+      border-radius: 32px;
+      padding: 42px 32px;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .crown-badge {
+      font-size: 46px;
+      margin-bottom: 10px;
+      display: inline-block;
+      filter: drop-shadow(0 4px 10px rgba(217, 119, 6, 0.3));
+    }
+
+    .royal-tag {
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    h1.royal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(24px, 5vw, 32px);
+      color: var(--rose-deep);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .wax-btn {
+      background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+      color: #fff;
+      border: 2px solid #fbcfe8;
+      padding: 16px 32px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(190, 24, 93, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .wax-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 16px 34px rgba(190, 24, 93, 0.45);
+    }
+
+    /* Story Video Player */
+    .story-container {
+      display: none;
+      width: 100%;
+      max-width: 760px;
+      background: var(--parchment);
+      backdrop-filter: blur(18px);
+      border: 2px solid #fff;
+      border-radius: 32px;
+      padding: 24px 24px 28px;
+      box-shadow: 0 25px 70px rgba(131, 24, 67, 0.18);
+      position: relative;
+    }
+
+    .progress-bars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .bar-track {
+      height: 5px;
+      background: rgba(244, 114, 182, 0.25);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f472b6, #be185d);
+      border-radius: 999px;
+      transition: width 0.1s linear;
+    }
+
+    .scene {
+      display: none;
+      min-height: 390px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeInScene 0.7s ease forwards;
+    }
+
+    .scene.active { display: flex; }
+
+    @keyframes fadeInScene {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* 3-Picture Royal Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+      margin: 14px 0;
+    }
+
+    @media (max-width: 640px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        max-height: 360px;
+        overflow-y: auto;
+        padding: 4px;
+      }
+    }
+
+    .royal-frame {
+      background: #fff;
+      padding: 8px 8px 14px;
+      border-radius: 18px;
+      border: 2px solid #fbcfe8;
+      box-shadow: 0 10px 24px rgba(190, 24, 93, 0.12);
+      transition: transform 0.3s ease;
+    }
+
+    .royal-frame:nth-child(1) { transform: rotate(-2deg); }
+    .royal-frame:nth-child(2) { transform: translateY(-6px); }
+    .royal-frame:nth-child(3) { transform: rotate(2deg); }
+    .royal-frame:hover { transform: scale(1.04) rotate(0deg); }
+
+    .royal-frame img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      background: #fdf2f8;
+    }
+
+    .frame-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--rose-deep);
+      margin-top: 8px;
+    }
+
+    /* Love Letter Scroll */
+    .letter-box {
+      background: linear-gradient(180deg, #fff 0%, #fdf2f8 100%);
+      border: 1.5px solid #f9a8d4;
+      border-radius: 24px;
+      padding: 28px 24px;
+      max-width: 560px;
+      box-shadow: inset 0 0 24px rgba(244, 114, 182, 0.12);
+    }
+
+    .letter-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 3.6vw, 25px);
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    /* Story Navigation */
+    .story-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(244, 114, 182, 0.25);
+    }
+
+    .nav-btn {
+      background: rgba(252, 231, 243, 0.9);
+      border: 1px solid #f9a8d4;
+      color: var(--rose-deep);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Customize Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(74, 29, 72, 0.45);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 24px;
+      max-width: 480px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+    }
+
+    .modal-card h2 {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--rose-deep);
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #fbcfe8;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pastel Castle Backdrop -->
+  <div class="castle-backdrop">
+    <div class="sun-glow"></div>
+    <svg class="castle-svg" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Soft Pastel Clouds -->
+      <ellipse cx="220" cy="360" rx="220" ry="55" fill="#ffffff" fill-opacity="0.75"/>
+      <ellipse cx="980" cy="365" rx="240" ry="60" fill="#ffffff" fill-opacity="0.75"/>
+      <ellipse cx="600" cy="385" rx="460" ry="65" fill="#ffffff" fill-opacity="0.9"/>
+      <!-- Castle Towers -->
+      <rect x="360" y="190" width="70" height="190" rx="6" fill="#f9a8d4"/>
+      <polygon points="352,190 395,115 438,190" fill="#c084fc"/>
+      <rect x="770" y="190" width="70" height="190" rx="6" fill="#f9a8d4"/>
+      <polygon points="762,190 805,115 848,190" fill="#c084fc"/>
+      <!-- Center Grand Spire -->
+      <rect x="520" y="135" width="160" height="245" rx="8" fill="#fbcfe8"/>
+      <polygon points="508,135 600,32 692,135" fill="#a855f7"/>
+      <!-- Side Wings -->
+      <rect x="430" y="230" width="90" height="150" fill="#f5d0fe"/>
+      <rect x="680" y="230" width="90" height="150" fill="#f5d0fe"/>
+      <!-- Golden Arched Door & Windows -->
+      <path d="M570 380 V315 A30 30 0 0 1 630 315 V380 Z" fill="#fde68a" stroke="#f59e0b" stroke-width="3"/>
+      <circle cx="600" cy="185" r="18" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+      <rect x="385" y="225" width="20" height="32" rx="10" fill="#fef3c7"/>
+      <rect x="795" y="225" width="20" height="32" rx="10" fill="#fef3c7"/>
+      <!-- Flags -->
+      <path d="M600 32 L600 10 L632 18 L600 26" fill="#f43f5e"/>
+    </svg>
+  </div>
+
+  <canvas id="petalsCanvas"></canvas>
+
+  <!-- Top Controls -->
+  <div class="top-bar">
+    <button class="pill-btn" id="musicToggle">🎵 Music: Off</button>
+    <button class="pill-btn" id="openCustomize">✨ Customize</button>
+  </div>
+
+  <main class="stage">
+    <!-- Cover Proclamation -->
+    <section class="proclamation-card" id="coverScreen">
+      <div class="crown-badge">👑</div>
+      <div class="royal-tag">A Royal Proclamation</div>
+      <h1 class="royal-title" id="coverTitle">Happy Princess Day, My Love</h1>
+      <p class="subtitle" id="coverSubtitle">Every castle needs its queen, and my heart belongs forever to you.</p>
+      <button class="wax-btn" id="startStoryBtn">Open Royal Story ✨</button>
+    </section>
+
+    <!-- 4-Scene Animated Story -->
+    <section class="story-container" id="storyPlayer">
+      <div class="progress-bars">
+        <div class="bar-track"><div class="bar-fill" id="bar0"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bar1"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bar2"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="bar3"></div></div>
+      </div>
+
+      <!-- Scene 1: Royal Welcome -->
+      <div class="scene active" id="scene0">
+        <div style="font-size: 64px; margin-bottom: 12px;">🏰✨</div>
+        <div class="royal-tag">Chapter I • The Coronation</div>
+        <h2 class="royal-title" style="font-size: 30px; margin-bottom: 14px;" id="scene1Heading">To The Fairest Princess</h2>
+        <p class="letter-text" style="max-width: 500px;" id="scene1Text">
+          In a world full of ordinary moments, your smile turns every single day into a fairytale.
+        </p>
+      </div>
+
+      <!-- Scene 2: 3-Picture Gallery -->
+      <div class="scene" id="scene1">
+        <div class="royal-tag">Chapter II • Royal Memories</div>
+        <h2 class="royal-title" style="font-size: 24px; margin-bottom: 6px;">My Favorite Moments With You</h2>
+        <div class="gallery-grid">
+          <div class="royal-frame">
+            <img id="img1" src="photo1.jpg" alt="Memory 1" onerror="this.src='https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500&q=80'">
+            <div class="frame-caption" id="cap1">Pure Magic ✨</div>
+          </div>
+          <div class="royal-frame">
+            <img id="img2" src="photo2.jpg" alt="Memory 2" onerror="this.src='https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=500&q=80'">
+            <div class="frame-caption" id="cap2">My Forever Princess 👑</div>
+          </div>
+          <div class="royal-frame">
+            <img id="img3" src="photo3.jpg" alt="Memory 3" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500&q=80'">
+            <div class="frame-caption" id="cap3">Always & Forever 💖</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3: Love Letter -->
+      <div class="scene" id="scene2">
+        <div class="royal-tag">Chapter III • From My Heart</div>
+        <div class="letter-box">
+          <p class="letter-text" id="loveLetterText">
+            You don’t need a crown to rule my heart. Your kindness, grace, and warmth make me the luckiest person alive. Happy Princess Day, my love!
+          </p>
+        </div>
+      </div>
+
+      <!-- Scene 4: Finale -->
+      <div class="scene" id="scene3">
+        <div style="font-size: 60px; margin-bottom: 10px;">💖👑🌸</div>
+        <div class="royal-tag">Chapter IV • Happily Ever After</div>
+        <h2 class="royal-title" style="font-size: 28px; margin-bottom: 12px;" id="finaleTitle">I Love You Endlessly</h2>
+        <p class="subtitle" style="margin-bottom: 20px;">Today, tomorrow, and for all of our tomorrows.</p>
+        <button class="wax-btn" id="burstBtn">Shower With Petals & Hearts 🌸</button>
+      </div>
+
+      <div class="story-nav">
+        <button class="nav-btn" id="prevBtn">← Previous</button>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;" id="sceneCounter">1 / 4</span>
+        <button class="nav-btn" id="nextBtn">Next →</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Customize Modal -->
+  <div class="modal-overlay" id="customModal">
+    <div class="modal-card">
+      <h2>Personalize Your Castle</h2>
+      <div class="field">
+        <label>Her Name / Title</label>
+        <input type="text" id="inName" placeholder="e.g., Princess Ananya" />
+      </div>
+      <div class="field">
+        <label>Opening Message</label>
+        <textarea id="inMsg1" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label>Love Letter (Chapter III)</label>
+        <textarea id="inLetter" rows="3"></textarea>
+      </div>
+      <div class="field">
+        <label>Photo 1 Caption</label>
+        <input type="text" id="inCap1" placeholder="Pure Magic ✨" />
+      </div>
+      <div class="field">
+        <label>Photo 2 Caption</label>
+        <input type="text" id="inCap2" placeholder="My Forever Princess 👑" />
+      </div>
+      <div class="field">
+        <label>Photo 3 Caption</label>
+        <input type="text" id="inCap3" placeholder="Always & Forever 💖" />
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button class="wax-btn" style="flex:1; padding: 12px;" id="saveCustomBtn">Apply & Copy Link</button>
+        <button class="nav-btn" id="closeModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // URL Parameter Support for Shareable Links
+    const params = new URLSearchParams(window.location.search);
+    const state = {
+      name: params.get('name') || 'My Love',
+      msg1: params.get('msg1') || 'In a world full of ordinary moments, your smile turns every single day into a fairytale.',
+      letter: params.get('letter') || 'You don’t need a crown to rule my heart. Your kindness, grace, and warmth make me the luckiest person alive. Happy Princess Day, my love!',
+      cap1: params.get('cap1') || 'Pure Magic ✨',
+      cap2: params.get('cap2') || 'My Forever Princess 👑',
+      cap3: params.get('cap3') || 'Always & Forever 💖'
+    };
+
+    function applyState() {
+      document.getElementById('coverTitle').textContent = `Happy Princess Day, ${state.name}`;
+      document.getElementById('scene1Heading').textContent = `To ${state.name}`;
+      document.getElementById('finaleTitle').textContent = `Forever Yours, ${state.name}`;
+      document.getElementById('scene1Text').textContent = state.msg1;
+      document.getElementById('loveLetterText').textContent = state.letter;
+      document.getElementById('cap1').textContent = state.cap1;
+      document.getElementById('cap2').textContent = state.cap2;
+      document.getElementById('cap3').textContent = state.cap3;
+    }
+    applyState();
+
+    // Gentle Web Audio Music Box
+    let audioCtx = null, isPlayingMusic = false, musicTimer = null;
+    const notes = [523.25, 659.25, 783.99, 1046.50, 987.77, 783.99, 659.25, 587.33];
+    let noteIdx = 0;
+
+    function toggleMusic(forceOn = false) {
+      if (forceOn && isPlayingMusic) return;
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      isPlayingMusic = forceOn ? true : !isPlayingMusic;
+      document.getElementById('musicToggle').textContent = isPlayingMusic ? '🎵 Music: On' : '🎵 Music: Off';
+
+      if (isPlayingMusic) {
+        musicTimer = setInterval(() => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = notes[noteIdx % notes.length];
+          gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.1);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 1.1);
+          noteIdx++;
+        }, 650);
+      } else {
+        clearInterval(musicTimer);
+      }
+    }
+    document.getElementById('musicToggle').onclick = () => toggleMusic();
+
+    // Story Slideshow Logic
+    let currentScene = 0;
+    const totalScenes = 4;
+    const sceneDurations = [5500, 8000, 7500, 9000];
+    let progressInterval = null;
+
+    function showScene(index) {
+      currentScene = (index + totalScenes) % totalScenes;
+      document.querySelectorAll('.scene').forEach((el, i) => el.classList.toggle('active', i === currentScene));
+      document.getElementById('sceneCounter').textContent = `${currentScene + 1} / ${totalScenes}`;
+
+      for (let i = 0; i < totalScenes; i++) {
+        document.getElementById(`bar${i}`).style.width = i < currentScene ? '100%' : '0%';
+      }
+
+      clearInterval(progressInterval);
+      let elapsed = 0;
+      const duration = sceneDurations[currentScene];
+      progressInterval = setInterval(() => {
+        elapsed += 100;
+        const pct = Math.min(100, (elapsed / duration) * 100);
+        document.getElementById(`bar${currentScene}`).style.width = pct + '%';
+        if (elapsed >= duration && currentScene < totalScenes - 1) {
+          showScene(currentScene + 1);
+        }
+      }, 100);
+    }
+
+    document.getElementById('startStoryBtn').onclick = () => {
+      document.getElementById('coverScreen').style.display = 'none';
+      document.getElementById('storyPlayer').style.display = 'block';
+      toggleMusic(true);
+      burstPetals(35);
+      showScene(0);
+    };
+
+    document.getElementById('prevBtn').onclick = () => showScene(currentScene - 1);
+    document.getElementById('nextBtn').onclick = () => showScene(currentScene + 1);
+    document.getElementById('burstBtn').onclick = () => burstPetals(50);
+
+    // Customize Modal
+    const modal = document.getElementById('customModal');
+    document.getElementById('openCustomize').onclick = () => {
+      document.getElementById('inName').value = state.name;
+      document.getElementById('inMsg1').value = state.msg1;
+      document.getElementById('inLetter').value = state.letter;
+      document.getElementById('inCap1').value = state.cap1;
+      document.getElementById('inCap2').value = state.cap2;
+      document.getElementById('inCap3').value = state.cap3;
+      modal.style.display = 'flex';
+    };
+    document.getElementById('closeModalBtn').onclick = () => modal.style.display = 'none';
+
+    document.getElementById('saveCustomBtn').onclick = () => {
+      state.name = document.getElementById('inName').value || 'My Love';
+      state.msg1 = document.getElementById('inMsg1').value;
+      state.letter = document.getElementById('inLetter').value;
+      state.cap1 = document.getElementById('inCap1').value;
+      state.cap2 = document.getElementById('inCap2').value;
+      state.cap3 = document.getElementById('inCap3').value;
+      applyState();
+
+      const url = new URL(window.location.href.split('?')[0]);
+      Object.entries(state).forEach(([k, v]) => url.searchParams.set(k, v));
+      navigator.clipboard?.writeText(url.toString());
+      alert('Saved! Your personalized link has been copied to your clipboard.');
+      modal.style.display = 'none';
+    };
+
+    // Falling Rose Petals & Sparkles Canvas
+    const canvas = document.getElementById('petalsCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createParticle(burst = false) {
+      return {
+        x: burst ? canvas.width / 2 + (Math.random() - 0.5) * 180 : Math.random() * canvas.width,
+        y: burst ? canvas.height / 2 : -20,
+        size: 6 + Math.random() * 7,
+        speedY: burst ? (Math.random() - 0.7) * 7 : 0.8 + Math.random() * 1.4,
+        speedX: burst ? (Math.random() - 0.5) * 9 : (Math.random() - 0.5) * 1.2,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.05,
+        color: ['#f472b6', '#fbcfe8', '#e879f9', '#fde68a'][Math.floor(Math.random() * 4)]
+      };
+    }
+
+    for (let i = 0; i < 38; i++) {
+      const p = createParticle(false);
+      p.y = Math.random() * canvas.height;
+      particles.push(p);
+    }
+
+    function burstPetals(count) {
+      for (let i = 0; i < count; i++) particles.push(createParticle(true));
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, idx) => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.rot += p.rotSpeed;
+        if (p.speedY < 1.5) p.speedY += 0.02;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.size, p.size * 0.6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (p.y > canvas.height + 30) {
+          if (particles.length > 42) particles.splice(idx, 1);
+          else Object.assign(p, createParticle(false));
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
